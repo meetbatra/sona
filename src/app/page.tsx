@@ -1,20 +1,10 @@
 "use client"
 
-import {useQuery} from "convex/react";
-import {api} from "../../convex/_generated/api";
+import ProjectsView from "@/features/projects/components/projects-view";
 
-const Page = () => {
-    const projects = useQuery(api.projects.get);
-
+const Home = () => {
     return (
-        <div className="flex flex-col gap-2 p-4">
-          {projects?.map((project) => (
-              <div className="border rounded p-2 flex flex-col" key={project._id}>
-                <p>{project.name}</p>
-                <p>Is completed: {project.ownerId}</p>
-              </div>
-          ))}
-        </div>
+        <ProjectsView />
     )
 }
-export default Page
+export default Home;
