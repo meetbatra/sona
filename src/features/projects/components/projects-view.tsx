@@ -52,7 +52,7 @@ const ProjectsView = () => {
                             <img
                                 src="/logo.svg"
                                 alt="Polaris"
-                                className="size-[32px] md:size-[46px]"
+                                className="size-8 md:size-11.5"
                             />
                             <h1 className={cn(
                                 "text-4xl md:text-5xl font-semibold",
