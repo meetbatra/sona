@@ -7,6 +7,7 @@ import {cn} from "@/lib/utils";
 import {Id} from "../../../../convex/_generated/dataModel";
 import {Allotment} from "allotment";
 import FileExplorer from "@/features/projects/components/file-explorer";
+import EditorView from "@/features/editor/components/editor-view";
 
 const MIN_SIDEBAR_WIDTH = 200;
 const MAX_SIDEBAR_WIDTH = 800;
@@ -75,7 +76,7 @@ const ProjectIdView = ({ projectId }: { projectId: Id<"projects"> }) => {
                             <FileExplorer projectId={projectId} />
                         </Allotment.Pane>
                         <Allotment.Pane>
-                            <div>Editor</div>
+                            <EditorView projectId={projectId} />
                         </Allotment.Pane>
                     </Allotment>
                 </div>
