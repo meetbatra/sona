@@ -84,7 +84,9 @@ const Navbar = ({
                                                 "text-sm font-medium",
                                                 font.className,
                                             )}
-                                        >Polaris</span>
+                                        >
+                                            Sona
+                                        </span>
                                     </Link>
                                 </Button>
                             </BreadcrumbLink>

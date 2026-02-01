@@ -159,7 +159,7 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                 >
                     <PromptInputBody>
                         <PromptInputTextarea
-                            placeholder="Ask Polaris anything..."
+                            placeholder="Ask Sona anything..."
                             onChange={(e) => setInput(e.target.value)}
                             value={input}
                             disabled={isProcessing}
