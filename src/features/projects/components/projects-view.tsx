@@ -51,14 +51,14 @@ const ProjectsView = () => {
                         <div className="flex items-center gap-2 w-full group/logo">
                             <img
                                 src="/logo.svg"
-                                alt="Polaris"
+                                alt="Sona"
                                 className="size-8 md:size-11.5"
                             />
                             <h1 className={cn(
                                 "text-4xl md:text-5xl font-semibold",
                                 font.className,
                             )}>
-                                Polaris
+                                Sona
                             </h1>
                         </div>
                     </div>

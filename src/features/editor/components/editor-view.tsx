@@ -38,7 +38,7 @@ const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
                     <div className="size-full flex items-center justify-center">
                         <Image
                             src="/logo-alt.svg"
-                            alt="Polaris"
+                            alt="Sona"
                             width={50}
                             height={50}
                             className="opacity-25"
