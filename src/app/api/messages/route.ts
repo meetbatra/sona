@@ -22,7 +22,7 @@ export async function POST (request: Request){
         );
     }
 
-    const internalKey = process.env.CONVEX_INTERNAL_KEY;
+    const internalKey = process.env.SONA_CONVEX_INTERNAL_KEY;
 
     if(!internalKey){
         return NextResponse.json(
@@ -48,7 +48,38 @@ export async function POST (request: Request){
 
     const projectId = conversation.projectId;
 
-    //TODO: check for processing messages
+    const processingMessages = await convex.query(
+        api.system.getProcessingMessages,
+        {
+            internalKey,
+            projectId,
+        }
+    );
+
+    if(processingMessages.length > 0){
+        await Promise.all(
+            processingMessages.map( async (msg) => {
+                await inngest.send({
+                    name: "message/cancel",
+                    data: {
+                        messageId: msg._id,
+                        conversationId,
+                        projectId,
+                        message
+                    }
+                });
+
+                await convex.mutation(
+                    api.system.updateMessageStatus,
+                    {
+                        internalKey,
+                        messageId: msg._id,
+                        status: "cancelled"
+                    }
+                );
+            })
+        );
+    }
 
     await convex.mutation(
         api.system.createMessage,
@@ -77,7 +108,10 @@ export async function POST (request: Request){
     const event = await inngest.send({
         name: "message/sent",
         data: {
-            messageId: assistantMessageId
+            messageId: assistantMessageId,
+            conversationId,
+            projectId,
+            message
         }
     });
 
