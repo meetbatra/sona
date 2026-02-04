@@ -417,7 +417,7 @@ export const deleteFile = mutation({
                     .withIndex("by_project_parent", (q) =>
                         q
                             .eq("projectId", item.projectId)
-                            .eq("parentId", item.parentId)
+                            .eq("parentId", fileId)
                     )
                     .collect();
 
