@@ -12,7 +12,7 @@ interface DeleteFilesToolOptions{
 const paramsSchema = z.object({
     fileIds: z
         .array(z.string().min(1, "File ID cannot be empty"))
-        .min(1, "Provied at least one file ID")
+        .min(1, "Provide at least one file ID")
 });
 
 export const createDeleteFilesTool = ({ internalKey }: DeleteFilesToolOptions) => {
