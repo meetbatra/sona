@@ -380,7 +380,7 @@ export const renameFile = mutation({
         );
 
         if(existing){
-            throw new Error(`A ${file.type} names ${args.newName} already exists`);
+            throw new Error(`A ${file.type} named ${args.newName} already exists`);
         }
 
         await ctx.db.patch("files", args.fileId, {
