@@ -8,6 +8,7 @@ import {Id} from "../../../../convex/_generated/dataModel";
 import {Allotment} from "allotment";
 import FileExplorer from "@/features/projects/components/file-explorer";
 import EditorView from "@/features/editor/components/editor-view";
+import PreviewView from "@/features/projects/components/preview-view";
 
 const MIN_SIDEBAR_WIDTH = 200;
 const MAX_SIDEBAR_WIDTH = 800;
@@ -84,7 +85,7 @@ const ProjectIdView = ({ projectId }: { projectId: Id<"projects"> }) => {
                     "absolute inset-0",
                     activeView === "preview" ? "visible" : "invisible"
                 )}>
-                    <div>Preview</div>
+                    <PreviewView projectId={projectId} />
                 </div>
             </div>
         </div>
