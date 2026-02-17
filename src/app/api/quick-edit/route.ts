@@ -38,7 +38,20 @@ Return ONLY the edited version of the selected code.
 Maintain the same indentation level as the original.
 Do not include any explanations or comments unless requested.
 If the instruction is unclear or cannot be applied, return the original code unchanged.
-</instructions>`;
+</instructions>
+
+<output_format>
+You MUST respond with valid JSON.
+Do NOT use markdown.
+Do NOT wrap in code fences.
+Do NOT include explanations.
+
+Return exactly this JSON structure:
+
+{
+  "editedCode": "string"
+}
+</output_format>`;
 
 export async function POST(request: Request){
     try {
@@ -111,8 +124,6 @@ export async function POST(request: Request){
             output: Output.object({ schema: quickEditSchema }),
             prompt
         });
-
-        console.log(output);
 
         return NextResponse.json({ editedCode: output.editedCode });
     } catch (error) {
