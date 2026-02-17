@@ -118,8 +118,8 @@ export const processMessage = inngest.createFunction(
                 system: TITLE_GENERATOR_SYSTEM_PROMPT,
                 model: openai({
                     model: "gpt-4o-mini",
-                    // baseUrl: process.env.MEGA_LLM_BASE_URL,
-                    // apiKey: process.env.MEGA_LLM_API_KEY,
+                    baseUrl: process.env.AI_PIPE_URL,
+                    apiKey: process.env.AI_PIPE_KEY,
                     defaultParameters: {
                         temperature: 0.1,
                         max_completion_tokens: 50
@@ -162,11 +162,11 @@ export const processMessage = inngest.createFunction(
             system: systemPrompt,
             model: openai({
                 model: "gpt-4.1-mini",
-                // baseUrl: process.env.AI_PIPE_URL,
-                // apiKey: process.env.AI_PIPE_KEY,
+                baseUrl: process.env.AI_PIPE_URL,
+                apiKey: process.env.AI_PIPE_KEY,
                 defaultParameters: {
                     temperature: 0.3,
-                    max_completion_tokens: 16000,
+                    max_completion_tokens: 16000
                 },
             }),
             tools: [

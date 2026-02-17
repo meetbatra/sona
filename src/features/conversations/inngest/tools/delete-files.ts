@@ -57,7 +57,7 @@ export const createDeleteFilesTool = ({ internalKey }: DeleteFilesToolOptions) =
 
             try {
                 return (
-                    await toolStep?.run("create-files", async () => {
+                    await toolStep?.run("delete-files", async () => {
                         const results: string[] = [];
 
                         for(const file of filesToDelete){

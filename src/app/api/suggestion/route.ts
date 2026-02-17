@@ -40,7 +40,20 @@ Follow these steps IN ORDER:
 3. Only if steps 1 and 2 don't apply: suggest what should be typed at the cursor position, using context from full_code.
 
 Your suggestion is inserted immediately after the cursor, so never suggest code that's already in the file.
-</instructions>`;
+</instructions>
+
+<output_format>
+You MUST respond with valid JSON.
+Do NOT use markdown.
+Do NOT wrap in code fences.
+Do NOT include explanations.
+
+Return exactly this JSON structure:
+
+{
+  "suggestion": "string"
+}
+</output_format>`;
 
 export async function POST(request: Request){
     try {

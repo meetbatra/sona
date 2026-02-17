@@ -15,7 +15,7 @@ export const createListFilesTool = ({
     projectId,
 }: ListFilesToolOptions) => {
     return createTool({
-        name: "list-files",
+        name: "listFiles",
         description: "List all files and folders in the project. Returns names, IDs, types, and parentId for each item. Items with parentId: null are at root level. Use the parentId to understand the folder structure - items with the same parentId are in the same folder.",
         parameters: z.object({}),
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

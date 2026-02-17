@@ -16,8 +16,8 @@ const paramsSchema = z.object({
 
 export const createRenameFileTool = ({ internalKey }: RenameFileToolOptions) => {
     return createTool({
-        name: "updateFile",
-        description: "Update the content of an existing file",
+        name: "renameFile",
+        description: "Rename a file or folder. Use this to change the name of an existing file or folder.",
         parameters: z.object({
             fileId: z.string().describe("The ID of the file or folder to rename"),
             newName: z.string().describe("The new name for the file or folder"),
@@ -41,7 +41,7 @@ export const createRenameFileTool = ({ internalKey }: RenameFileToolOptions) => 
 
             try {
                 return (
-                    await toolStep?.run("update-file", async () => {
+                    await toolStep?.run("rename-file", async () => {
                         await convex.mutation(api.system.renameFile, {
                             internalKey,
                             fileId: fileId as Id<"files">,
