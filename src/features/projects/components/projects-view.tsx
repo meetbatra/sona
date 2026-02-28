@@ -56,13 +56,17 @@ const ProjectsView = () => {
 
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, []);
+    }, [isSignedIn, openSignIn]);
 
     return (
         <>
-            <ProjectsCommandDialog open={commandDialogOpen} onOpenChange={setCommandDialogOpen} />
-            <ImportGithubDialog open={importDialogOpen} onOpenChange={setImportDialogOpen} />
-            <NewProjectDialog open={newProjectDialogOpen} onOpenChange={setNewProjectDialogOpen} />
+            {isSignedIn && (
+                <>
+                    <ProjectsCommandDialog open={commandDialogOpen} onOpenChange={setCommandDialogOpen} />
+                    <ImportGithubDialog open={importDialogOpen} onOpenChange={setImportDialogOpen} />
+                    <NewProjectDialog open={newProjectDialogOpen} onOpenChange={setNewProjectDialogOpen} />
+                </>
+            )}
 
             <div className="min-h-screen bg-sidebar flex flex-col items-center justify-center p-6 md:p-16">
                 <div className="w-full max-w-sm mx-auto flex flex-col gap-4 items-center">
