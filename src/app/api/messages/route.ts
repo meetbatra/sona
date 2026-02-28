@@ -23,9 +23,9 @@ export async function POST (request: Request){
         );
     }
 
-    // Resolve the user's Billing plan using Clerk and apply
+    // Resolve the user's Billing plan using Clerk Billing features and apply
     // a simple calendar-month quota for the sidebar agent.
-    const plan = await getUserPlan(userId);
+    const plan = await getUserPlan();
     const limit = PLAN_LIMITS[plan];
 
     const now = new Date();

@@ -21,7 +21,7 @@ export async function GET() {
     );
   }
 
-  const plan = await getUserPlan(userId);
+  const plan = await getUserPlan();
   const limit = PLAN_LIMITS[plan];
 
   const now = new Date();
