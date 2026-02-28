@@ -1,15 +1,16 @@
 "use client";
 
-import {Poppins} from "next/font/google";
-import {SparkleIcon} from "lucide-react";
-import {FaGithub} from "react-icons/fa";
-import {useEffect, useState} from "react";
+import { Poppins } from "next/font/google";
+import { SparkleIcon } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { useAuth, useClerk } from "@clerk/nextjs";
 
-import {cn} from "@/lib/utils";
-import {Button} from "@/components/ui/button";
-import {Kbd} from "@/components/ui/kbd";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Kbd } from "@/components/ui/kbd";
 import ProjectsList from "@/features/projects/components/projects-list";
-import {useCreateProject} from "@/features/projects/hooks/use-projects";
+import { useCreateProject } from "@/features/projects/hooks/use-projects";
 import ProjectsCommandDialog from "@/features/projects/components/projects-command-dialog";
 import ImportGithubDialog from "@/features/projects/components/import-github-dialog";
 import NewProjectDialog from "@/features/projects/components/new-project-dialog";
@@ -20,6 +21,9 @@ const font = Poppins({
 });
 
 const ProjectsView = () => {
+    const { isSignedIn } = useAuth();
+    const { openSignIn } = useClerk();
+
     const [commandDialogOpen, setCommandDialogOpen] = useState(false);
     const [importDialogOpen, setImportDialogOpen] = useState(false);
     const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
@@ -33,10 +37,18 @@ const ProjectsView = () => {
                 }
                 if(e.key === "i"){
                     e.preventDefault();
+                    if (!isSignedIn) {
+                        openSignIn({});
+                        return;
+                    }
                     setImportDialogOpen(true);
                 }
                 if(e.key === "j"){
                     e.preventDefault();
+                    if (!isSignedIn) {
+                        openSignIn({});
+                        return;
+                    }
                     setNewProjectDialogOpen(true);
                 }
             }
@@ -75,7 +87,13 @@ const ProjectsView = () => {
                         <div className="grid grid-cols-2 gap-2">
                             <Button
                                 variant="outline"
-                                onClick={() => setNewProjectDialogOpen(true)}
+                                onClick={() => {
+                                    if (!isSignedIn) {
+                                        openSignIn({});
+                                        return;
+                                    }
+                                    setNewProjectDialogOpen(true);
+                                }}
                                 className="h-full items-start justify-start p-4 bg-background border flex flex-col gap-6 rounded-none"
                             >
                                 <div className="flex items-center justify-between w-full">
@@ -92,7 +110,13 @@ const ProjectsView = () => {
                             </Button>
                             <Button
                                 variant="outline"
-                                onClick={() => setImportDialogOpen(true)}
+                                onClick={() => {
+                                    if (!isSignedIn) {
+                                        openSignIn({});
+                                        return;
+                                    }
+                                    setImportDialogOpen(true);
+                                }}
                                 className="h-full items-start justify-start p-4 bg-background border flex flex-col gap-6 rounded-none"
                             >
                                 <div className="flex items-center justify-between w-full">
@@ -109,7 +133,9 @@ const ProjectsView = () => {
                             </Button>
                         </div>
 
-                        <ProjectsList onViewAll={() => setCommandDialogOpen(true)} />
+                        {isSignedIn && (
+                            <ProjectsList onViewAll={() => setCommandDialogOpen(true)} />
+                        )}
 
                     </div>
                 </div>
