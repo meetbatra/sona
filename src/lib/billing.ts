@@ -16,13 +16,20 @@ export const PLAN_LIMITS: Record<Plan, number> = {
  * If no planSlug is found or it's not recognized, the user is treated as `free`.
  */
 export async function getUserPlan(userId: string): Promise<Plan> {
-  const user = await clerkClient.users.getUser(userId);
+  try {
+    const user = await clerkClient.users.getUser(userId);
 
-  const planSlug =
-    (user.publicMetadata.planSlug as string | undefined) ??
-    (user.privateMetadata.planSlug as string | undefined);
+    const planSlug =
+      (user.publicMetadata.planSlug as string | undefined) ??
+      (user.privateMetadata.planSlug as string | undefined);
 
-  if (planSlug === "pro") return "pro";
+    if (planSlug === "pro") return "pro";
+  } catch (error) {
+    // In local dev, or if Clerk server-side configuration is incomplete,
+    // `clerkClient` may not be fully initialized. Fail open to "free" so
+    // the app still works and limits default to the free tier.
+    console.warn("getUserPlan: falling back to 'free' plan", error);
+  }
 
   return "free";
 }
