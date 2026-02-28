@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {toast} from "sonner";
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import {CopyIcon, HistoryIcon, LoaderIcon, PlusIcon} from "lucide-react";
 
 import {Id} from "../../../../convex/_generated/dataModel";
@@ -96,7 +96,28 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                     message: message.text
                 },
             });
-        } catch {
+        } catch (error) {
+            if (error instanceof HTTPError) {
+                try {
+                    const body = await error.response.json<{
+                        error?: string;
+                        code?: string;
+                        plan?: string;
+                        limit?: number;
+                    }>();
+
+                    if (body?.code === "usage_limit_exceeded") {
+                        toast.error(body.error ?? "You have reached your monthly sidebar agent limit.");
+                        return;
+                    }
+
+                    toast.error(body?.error ?? "Message failed to send");
+                    return;
+                } catch {
+                    // fall through to generic error
+                }
+            }
+
             toast.error("Message failed to send");
         }
 

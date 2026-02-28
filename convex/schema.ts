@@ -30,6 +30,13 @@ export default defineSchema({
         ),
     }).index("by_owner", ["ownerId"]),
 
+    agentRuns: defineTable({
+        // Clerk user id (subject)
+        userId: v.string(),
+        // Unix ms timestamp when the sidebar agent run was triggered
+        createdAt: v.number(),
+    }).index("by_user_createdAt", ["userId", "createdAt"]),
+
     files: defineTable({
         projectId: v.id("projects"),
         parentId: v.optional(v.id("files")),

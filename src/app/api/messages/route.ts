@@ -1,4 +1,5 @@
 import {auth} from "@clerk/nextjs/server";
+import { getUserPlan, PLAN_LIMITS } from "@/lib/billing";
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
 import {z} from "zod";
 
@@ -22,12 +23,40 @@ export async function POST (request: Request){
         );
     }
 
+    // Resolve the user's Billing plan using Clerk and apply
+    // a simple calendar-month quota for the sidebar agent.
+    const plan = await getUserPlan(userId);
+    const limit = PLAN_LIMITS[plan];
+
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = now.getUTCMonth(); // 0-11
+
     const internalKey = process.env.SONA_CONVEX_INTERNAL_KEY;
 
     if(!internalKey){
         return NextResponse.json(
             {error: "Internal key not configured"},
             {status: 500},
+        );
+    }
+
+    const usage = await convex.query(api.system.getAgentRunCountForMonth, {
+        internalKey,
+        userId,
+        year,
+        month,
+    });
+
+    if (usage.count >= limit) {
+        return NextResponse.json(
+            {
+                error: "You have reached your monthly sidebar agent limit.",
+                code: "usage_limit_exceeded",
+                plan,
+                limit,
+            },
+            { status: 402 },
         );
     }
 
@@ -103,6 +132,12 @@ export async function POST (request: Request){
             status: "processing",
         }
     );
+
+    // Record this sidebar agent run for monthly usage tracking.
+    await convex.mutation(api.system.recordAgentRun, {
+        internalKey,
+        userId,
+    });
 
     //TODO: Inngest AI agent job
     const event = await inngest.send({
