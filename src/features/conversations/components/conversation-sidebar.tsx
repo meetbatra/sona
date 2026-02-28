@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {toast} from "sonner";
 import ky, { HTTPError } from "ky";
 import {CopyIcon, HistoryIcon, LoaderIcon, PlusIcon} from "lucide-react";
@@ -223,7 +223,7 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                             {loadingUsage && "Checking usage..."}
                             {!loadingUsage && usage && (
                                 <>
-                                    {usage.plan === "pro" ? "Pro" : "Free"}  b7 {usage.used} / {usage.limit} runs this month
+                                    {usage.plan === "pro" ? "Pro" : "Free"} {usage.used} / {usage.limit} runs this month
                                 </>
                             )}
                         </span>
