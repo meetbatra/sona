@@ -139,7 +139,6 @@ export async function POST (request: Request){
         userId,
     });
 
-    //TODO: Inngest AI agent job
     const event = await inngest.send({
         name: "message/sent",
         data: {

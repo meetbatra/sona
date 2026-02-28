@@ -64,7 +64,6 @@ export const processMessage = inngest.createFunction(
             throw new NonRetriableError("SONA_CONVEX_INTERNAL_KEY is not configured");
         }
 
-        //TODO: check if this is needed
         await step.sleep("db-sync", "5s");
 
         const conversation = await step.run("get-conversation", async () => {
