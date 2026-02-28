@@ -56,10 +56,9 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
     };
 
     // initial load
-    useState(() => {
+    useEffect(() => {
         void fetchUsage();
-        return null;
-    });
+    }, []);
     const conversations = useConversations(projectId);
 
     const activeConversationId =
@@ -119,6 +118,8 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                     message: message.text
                 },
             });
+            // On successful run, refresh usage so the counter updates immediately
+            void fetchUsage();
         } catch (error) {
             if (error instanceof HTTPError) {
                 try {
