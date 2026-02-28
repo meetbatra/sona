@@ -35,6 +35,7 @@ const ShimmerComponent = ({
   );
 
   return (
+      // eslint-disable-next-line react-hooks/static-components
     <MotionComponent
       animate={{ backgroundPosition: "0% center" }}
       className={cn(
