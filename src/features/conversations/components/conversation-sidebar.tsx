@@ -2,6 +2,7 @@ import {useState} from "react";
 import {toast} from "sonner";
 import ky, { HTTPError } from "ky";
 import {CopyIcon, HistoryIcon, LoaderIcon, PlusIcon} from "lucide-react";
+import { BillingButton } from "@/components/billing-button";
 
 import {Id} from "../../../../convex/_generated/dataModel";
 import {DEFAULT_CONVERSATION_TITLE} from "../constants";
@@ -33,10 +34,32 @@ interface ConversationSidebarProps {
 
 const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
     const [input, setInput] = useState("");
+    const [usage, setUsage] = useState<{ plan: string; used: number; limit: number } | null>(null);
+    const [loadingUsage, setLoadingUsage] = useState(false);
     const [selectedConversationId, setSelectedConversationId] = useState<Id<"conversations"> | null>(null);
     const [pastConversationsOpen, setPastConversationsOpen] = useState(false);
 
     const createConversation = useCreateConversation();
+
+    const fetchUsage = async () => {
+        try {
+            setLoadingUsage(true);
+            const data = await ky
+                .get("/api/agent/usage")
+                .json<{ plan: string; used: number; limit: number }>();
+            setUsage(data);
+        } catch {
+            // ignore usage errors in UI, sidebar should still work
+        } finally {
+            setLoadingUsage(false);
+        }
+    };
+
+    // initial load
+    useState(() => {
+        void fetchUsage();
+        return null;
+    });
     const conversations = useConversations(projectId);
 
     const activeConversationId =
@@ -108,6 +131,8 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
 
                     if (body?.code === "usage_limit_exceeded") {
                         toast.error(body.error ?? "You have reached your monthly sidebar agent limit.");
+                        // Refresh usage so the meter reflects the latest count
+                        void fetchUsage();
                         return;
                     }
 
@@ -191,10 +216,21 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                     </ConversationContent>
                     <ConversationScrollButton />
                 </Conversation>
-                <div className="p-3">
+                <div className="p-3 space-y-1.5">
+                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                        <span>
+                            {loadingUsage && "Checking usage..."}
+                            {!loadingUsage && usage && (
+                                <>
+                                    {usage.plan === "pro" ? "Pro" : "Free"}  b7 {usage.used} / {usage.limit} runs this month
+                                </>
+                            )}
+                        </span>
+                        <BillingButton />
+                    </div>
                     <PromptInput
                         onSubmit={handleSubmit}
-                        className="mt-2"
+                        className="mt-1.5"
                     >
                         <PromptInputBody>
                             <PromptInputTextarea
