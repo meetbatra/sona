@@ -227,7 +227,7 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                                 </>
                             )}
                         </span>
-                        <BillingButton />
+                        {!loadingUsage && usage?.plan !== "pro" && <BillingButton />}
                     </div>
                     <PromptInput
                         onSubmit={handleSubmit}
