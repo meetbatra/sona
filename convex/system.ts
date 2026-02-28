@@ -14,6 +14,48 @@ const validateInternalKey = (key: string) => {
     }
 }
 
+export const getAgentRunCountForMonth = query({
+    args: {
+        internalKey: v.string(),
+        userId: v.string(),
+        year: v.number(),
+        month: v.number(), // 0-11 (UTC)
+    },
+    handler: async (ctx, args) => {
+        validateInternalKey(args.internalKey);
+
+        const start = Date.UTC(args.year, args.month, 1, 0, 0, 0, 0);
+        const end = Date.UTC(args.year, args.month + 1, 1, 0, 0, 0, 0);
+
+        const runs = await ctx.db
+            .query("agentRuns")
+            .withIndex("by_user_createdAt", (q) =>
+                q
+                    .eq("userId", args.userId)
+                    .gte("createdAt", start)
+                    .lt("createdAt", end)
+            )
+            .collect();
+
+        return { count: runs.length };
+    }
+});
+
+export const recordAgentRun = mutation({
+    args: {
+        internalKey: v.string(),
+        userId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        validateInternalKey(args.internalKey);
+
+        await ctx.db.insert("agentRuns", {
+            userId: args.userId,
+            createdAt: Date.now(),
+        });
+    }
+});
+
 export const getConversationById = query({
     args: {
         conversationId: v.id("conversations"),
