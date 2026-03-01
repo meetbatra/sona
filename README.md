@@ -8,7 +8,7 @@ This project is built with **Next.js 16**, **Convex**, **Clerk**, and **Inngest*
 
 ## Key Features
 
-### Project Home
+### Project Home
 
 When you open Sona (the `/` route):
 
@@ -34,7 +34,7 @@ All actions that actually talk to Convex/GitHub are mounted **only** when the us
 
 ---
 
-### Create Projects from a Prompt
+### Create Projects from a Prompt
 
 Sona lets you spin up projects from a natural language description using the **New Project** dialog.
 
