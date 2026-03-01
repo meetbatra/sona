@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   title: "Sona – AI-Powered Code Workspace",
   description:
     "Spin up AI-powered code workspaces from GitHub or a prompt. Import repos, edit with an AI assistant, and export changes back to GitHub.",
+  icons: {
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
+    shortcut: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
