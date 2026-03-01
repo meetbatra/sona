@@ -219,11 +219,13 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                 </Conversation>
                 <div className="p-3 space-y-1.5">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                        <span>
+                        <span
+                            title="Usage resets on the 1st of each month"
+                        >
                             {loadingUsage && "Checking usage..."}
                             {!loadingUsage && usage && (
                                 <>
-                                    {usage.plan === "pro" ? "Pro" : "Free"} {usage.used} / {usage.limit} runs this month
+                                    {usage.plan === "pro" ? "Pro" : "Free"} &#x25E6; {usage.used}/{usage.limit} runs
                                 </>
                             )}
                         </span>
