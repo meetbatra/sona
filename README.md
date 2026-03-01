@@ -67,7 +67,7 @@ Result: from prompt to live AI-driven project context in one action.
 
 ---
 
-### Import from GitHub
+### Import from GitHub
 
 Sona can import existing GitHub repositories as projects.
 
@@ -91,7 +91,7 @@ This makes Sona a thin AI overlay on top of any existing repo.
 
 ---
 
-### Code Editing Experience
+### Code Editing Experience
 
 Sona uses **CodeMirror 6** with a custom setup and extensions built for AI-assisted editing.
 
@@ -154,7 +154,7 @@ Key behaviors:
 
 ---
 
-### Usage-Based Billing (Clerk Billing Integration)
+### Usage-Based Billing (Clerk Billing Integration)
 
 Sona enforces monthly usage limits on the sidebar agent using **Clerk Billing features** and Convex.
 
@@ -221,7 +221,7 @@ The meter updates in real-time:
 
 ---
 
-### Projects, Files, and Binary Assets (Convex)
+### Projects, Files, and Binary Assets (Convex)
 
 Convex schema and functions in `convex/system.ts` and `convex/schema.ts` manage projects and files:
 
@@ -242,7 +242,7 @@ The frontend uses hooks like `useFiles`, `useCreateFile`, `useRenameFile`, etc.,
 
 ---
 
-### Auth & Access Control
+### Auth & Access Control
 
 Sona uses **Clerk** for authentication and session management:
 
