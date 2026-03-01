@@ -225,7 +225,7 @@ const ConversationSidebar = ({ projectId }: ConversationSidebarProps) => {
                             {loadingUsage && "Checking usage..."}
                             {!loadingUsage && usage && (
                                 <>
-                                    {usage.plan === "pro" ? "Pro" : "Free"}  b7 {usage.used}/{usage.limit} runs
+                                    {usage.plan === "pro" ? "Pro" : "Free"} &#x25E6; {usage.used}/{usage.limit} runs
                                 </>
                             )}
                         </span>
