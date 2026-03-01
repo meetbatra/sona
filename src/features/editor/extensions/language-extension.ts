@@ -5,6 +5,8 @@ import {css} from "@codemirror/lang-css";
 import {json} from "@codemirror/lang-json";
 import {markdown} from "@codemirror/lang-markdown";
 import {python} from "@codemirror/lang-python";
+import { yaml } from "@codemirror/lang-yaml";
+import { sql } from "@codemirror/lang-sql";
 
 export const getLanguageExtension = (filename: string) : Extension => {
     const ext  = filename.split(".").pop()?.toLowerCase();
@@ -29,6 +31,16 @@ export const getLanguageExtension = (filename: string) : Extension => {
             return markdown();
         case "py":
             return python();
+        case "yml":
+        case "yaml":
+            return yaml();
+        case "sql":
+            return sql();
+        case "sh":
+        case "bash":
+            // Basic shell support via SQL's plain-text tokenizer is better than nothing;
+            // for now we leave shell files untyped or use a future shell lang package.
+            return [];
         default:
             return [];
     }
