@@ -11,9 +11,8 @@ export const BillingButton = () => {
   return (
     <Button
       variant="outline"
-      size="xs"
       className="h-6 px-2 text-[11px] gap-1"
-      onClick={() => openUserProfile({ routing: "hash", path: "#billing" })}
+      onClick={() => openUserProfile()}
     >
       <CrownIcon className="size-3" />
       Upgrade
