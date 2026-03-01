@@ -1,4 +1,4 @@
-# Sona  AI-Powered Code Workspace
+# Sona - AI-Powered Code Workspace
 
 Sona is an AI-powered, browser-based code workspace designed for working on real repositories without a heavy backend. Import a GitHub repo or describe what you want to build, let Sona scaffold and edit code with an AI agent, then export changes back to GitHub.
 
@@ -8,7 +8,7 @@ This project is built with **Next.js 16**, **Convex**, **Clerk**, and **Inngest*
 
 ## Key Features
 
-### 4e6 Project Home
+### Project Home
 
 When you open Sona (the `/` route):
 
@@ -34,7 +34,7 @@ All actions that actually talk to Convex/GitHub are mounted **only** when the us
 
 ---
 
-### 9f0 Create Projects from a Prompt
+### Create Projects from a Prompt
 
 Sona lets you spin up projects from a natural language description using the **New Project** dialog.
 
@@ -67,7 +67,7 @@ Result: from prompt to live AI-driven project context in one action.
 
 ---
 
-### 9f8 Import from GitHub
+### Import from GitHub
 
 Sona can import existing GitHub repositories as projects.
 
@@ -91,7 +91,7 @@ This makes Sona a thin AI overlay on top of any existing repo.
 
 ---
 
-### 4dd Code Editing Experience
+### Code Editing Experience
 
 Sona uses **CodeMirror 6** with a custom setup and extensions built for AI-assisted editing.
 
@@ -123,7 +123,7 @@ The editor is embedded in `EditorView`, which:
 
 ---
 
-### 3ad AI Sidebar Agent (with Usage-Based Billing)
+### AI Sidebar Agent (with Usage-Based Billing)
 
 Each project has a **sidebar AI agent** that can discuss and modify the codebase.
 
@@ -154,7 +154,7 @@ Key behaviors:
 
 ---
 
-### 4b8 Usage-Based Billing (Clerk Billing Integration)
+### Usage-Based Billing (Clerk Billing Integration)
 
 Sona enforces monthly usage limits on the sidebar agent using **Clerk Billing features** and Convex.
 
@@ -221,7 +221,7 @@ The meter updates in real-time:
 
 ---
 
-### 4c1 Projects, Files, and Binary Assets (Convex)
+### Projects, Files, and Binary Assets (Convex)
 
 Convex schema and functions in `convex/system.ts` and `convex/schema.ts` manage projects and files:
 
@@ -242,7 +242,7 @@ The frontend uses hooks like `useFiles`, `useCreateFile`, `useRenameFile`, etc.,
 
 ---
 
-### 512 Auth & Access Control
+### Auth & Access Control
 
 Sona uses **Clerk** for authentication and session management:
 
