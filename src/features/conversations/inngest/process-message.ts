@@ -1,20 +1,20 @@
-import {inngest} from "@/inngest/client";
-import {createAgent, createNetwork, openai} from "@inngest/agent-kit";
-import {NonRetriableError} from "inngest";
+import { inngest } from "@/inngest/client";
+import { createAgent, createNetwork, openai } from "@inngest/agent-kit";
+import { NonRetriableError } from "inngest";
 
-import {Id} from "../../../../convex/_generated/dataModel";
-import {convex} from "@/lib/convex-client";
-import {api} from "../../../../convex/_generated/api";
-import {CODING_AGENT_SYSTEM_PROMPT, TITLE_GENERATOR_SYSTEM_PROMPT} from "@/features/conversations/inngest/constants";
-import {DEFAULT_CONVERSATION_TITLE} from "@/features/conversations/constants";
-import {createReadFilesTool} from "@/features/conversations/inngest/tools/read-files";
-import {createListFilesTool} from "@/features/conversations/inngest/tools/list-files";
-import {createUpdateFileTool} from "@/features/conversations/inngest/tools/update-file";
-import {createCreateFilesTool} from "@/features/conversations/inngest/tools/create-files";
-import {createCreateFolderTool} from "@/features/conversations/inngest/tools/create-folder";
-import {createRenameFileTool} from "@/features/conversations/inngest/tools/rename-file";
-import {createDeleteFilesTool} from "@/features/conversations/inngest/tools/delete-files";
-import {createScrapeUrlsTool} from "@/features/conversations/inngest/tools/scrape-urls";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { convex } from "@/lib/convex-client";
+import { api } from "../../../../convex/_generated/api";
+import { CODING_AGENT_SYSTEM_PROMPT, TITLE_GENERATOR_SYSTEM_PROMPT } from "@/features/conversations/inngest/constants";
+import { DEFAULT_CONVERSATION_TITLE } from "@/features/conversations/constants";
+import { createReadFilesTool } from "@/features/conversations/inngest/tools/read-files";
+import { createListFilesTool } from "@/features/conversations/inngest/tools/list-files";
+import { createUpdateFileTool } from "@/features/conversations/inngest/tools/update-file";
+import { createCreateFilesTool } from "@/features/conversations/inngest/tools/create-files";
+import { createCreateFolderTool } from "@/features/conversations/inngest/tools/create-folder";
+import { createRenameFileTool } from "@/features/conversations/inngest/tools/rename-file";
+import { createDeleteFilesTool } from "@/features/conversations/inngest/tools/delete-files";
+import { createScrapeUrlsTool } from "@/features/conversations/inngest/tools/scrape-urls";
 
 interface MessageEvent {
     messageId: Id<"messages">;
@@ -32,11 +32,11 @@ export const processMessage = inngest.createFunction(
                 if: "event.data.messageId == async.data.messageId"
             }
         ],
-        onFailure: async ({event, step}) => {
+        onFailure: async ({ event, step }) => {
             const { messageId } = event.data.event.data;
             const internalKey = process.env.SONA_CONVEX_INTERNAL_KEY;
 
-            if(internalKey){
+            if (internalKey) {
                 await step.run("update-message-on-failure", async () => {
                     await convex.mutation(api.system.updateMessageContent, {
                         internalKey,
@@ -50,7 +50,7 @@ export const processMessage = inngest.createFunction(
     {
         event: "message/sent",
     },
-    async ({event, step}) => {
+    async ({ event, step }) => {
         const {
             messageId,
             conversationId,
@@ -60,7 +60,7 @@ export const processMessage = inngest.createFunction(
 
         const internalKey = process.env.SONA_CONVEX_INTERNAL_KEY;
 
-        if(!internalKey){
+        if (!internalKey) {
             throw new NonRetriableError("SONA_CONVEX_INTERNAL_KEY is not configured");
         }
 
@@ -78,7 +78,7 @@ export const processMessage = inngest.createFunction(
             );
         });
 
-        if(!conversation){
+        if (!conversation) {
             throw new NonRetriableError("Conversation not found");
         }
 
@@ -101,7 +101,7 @@ export const processMessage = inngest.createFunction(
             (msg) => msg._id !== messageId && msg.content.trim() !== ""
         );
 
-        if(contextMessages.length > 0){
+        if (contextMessages.length > 0) {
             const historyText = contextMessages
                 .map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`)
                 .join("\n\n");
@@ -111,7 +111,7 @@ export const processMessage = inngest.createFunction(
 
         const shouldGenerateTitle = conversation.title === DEFAULT_CONVERSATION_TITLE;
 
-        if(shouldGenerateTitle){
+        if (shouldGenerateTitle) {
             const titleAgent = createAgent({
                 name: "title-generator",
                 system: TITLE_GENERATOR_SYSTEM_PROMPT,
@@ -132,7 +132,7 @@ export const processMessage = inngest.createFunction(
                 (m) => m.type === "text" && m.role === "assistant"
             );
 
-            if(textMessage?.type === "text"){
+            if (textMessage?.type === "text") {
                 const title = typeof textMessage.content === "string"
                     ? textMessage.content.trim()
                     : textMessage.content
@@ -140,7 +140,7 @@ export const processMessage = inngest.createFunction(
                         .join("")
                         .trim();
 
-                if(title){
+                if (title) {
                     await step.run("update-conversation-title", async () => {
                         await convex.mutation(
                             api.system.updateConversationTitle,
@@ -194,7 +194,7 @@ export const processMessage = inngest.createFunction(
                     (m) => m.type === "tool_call"
                 );
 
-                if(hasTextResponse && !hasToolCall){
+                if (hasTextResponse && !hasToolCall) {
                     return undefined;
                 }
 
@@ -211,7 +211,7 @@ export const processMessage = inngest.createFunction(
 
         let assistantMessage = "I processed your request. Let me know if you need anything else!";
 
-        if(textMessage?.type === "text"){
+        if (textMessage?.type === "text") {
             assistantMessage = typeof textMessage?.content === "string"
                 ? textMessage.content
                 : textMessage.content.map((c) => c.text).join("");
